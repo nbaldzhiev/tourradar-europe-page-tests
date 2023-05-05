@@ -1,4 +1,5 @@
 /** This module contains a page object model for the Europe Destinations page */
+import { DestinationTourCard } from './widgets/destination-tour-card';
 import { Page, Locator, expect } from '@playwright/test';
 
 /** This class defines an abstraction of the Eruope Destinations page */
@@ -20,6 +21,14 @@ export class EuropeDestinationsPage {
         this.filtersSidebar = page.locator('[data-cy="serp-filters"] aside');
         this.tourCardItem = page.locator('[data-cy="serp-tours--list"] ul li[data-cy="serp-tour"]');
         this.pager = page.locator('div.pag');
+    }
+
+    /**
+     * Gets and returns a tour card designated by its index in the list of cards. Returns it as a DestinationTourCard
+     * @param index 1-based index where 1 is the topmost card
+     */
+    getTourCardByIndex(index: number): DestinationTourCard {
+        return new DestinationTourCard(this.tourCardItem.nth(index - 1));
     }
 
     /**
@@ -52,5 +61,10 @@ class EuropeDestinationsPageAssertions {
         )
         await expect(el).toBeVisible();
         await expect(this.page.tourCardItem).toHaveCount(15);
+    }
+
+    /** Asserts that the page title is correct */
+    async pageTitleIsCorrect() {
+        await expect(this.page.page).toHaveTitle(/.*Best Europe Tours & Trips.*/)
     }
 }
