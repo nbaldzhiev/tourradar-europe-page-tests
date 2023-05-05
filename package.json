@@ -1,0 +1,20 @@
+{
+  "name": "tourradar-europe-page-tests",
+  "version": "1.0.0",
+  "description": "UI Tests for the Europe destination page of the TourRadar platform",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nbaldzhiev/tourradar-europe-page-tests.git"
+  },
+  "author": "nenko.baldzhiev@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nbaldzhiev/tourradar-europe-page-tests/issues"
+  },
+  "homepage": "https://github.com/nbaldzhiev/tourradar-europe-page-tests#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.33.0"
+  }
+}
