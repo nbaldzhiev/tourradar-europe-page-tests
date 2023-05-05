@@ -4,8 +4,8 @@ import { Locator, expect } from '@playwright/test';
 /** This class defines an abstraction of a Tour card item found for a given destination, such as Europe */
 export class DestinationTourCard {
     readonly cardLocator: Locator;
-    readonly thumbnailImg: Locator;
-    readonly mapImg: Locator;
+    readonly photoThumbnail: Locator;
+    readonly mapThumbnail: Locator;
     readonly category: Locator;
     readonly title: Locator;
     readonly reviews: Locator;
@@ -17,8 +17,8 @@ export class DestinationTourCard {
 
 
     constructor(cardLocator: Locator) {
-        this.thumbnailImg = cardLocator.locator('img[data-id]');
-        this.mapImg = cardLocator.locator('img.map');
+        this.photoThumbnail = cardLocator.locator('img[data-id]');
+        this.mapThumbnail = cardLocator.locator('img.map');
         this.category = cardLocator.locator('a.ao-serp-tour__travel-style-link');
         this.title = cardLocator.locator('h4');
         this.reviews = cardLocator.locator(' a.js-reviews');
@@ -30,7 +30,12 @@ export class DestinationTourCard {
 
     /** Clicks the Photo Thumbnail of the tour card */
     async clickPhotoThumbnail() {
-        await this.thumbnailImg.click();
+        await this.photoThumbnail.click();
+    }
+
+    /** Clicks the Map thumbnail of the tour card */
+    async clickMapThumbnail() {
+        await this.mapThumbnail.click();
     }
 
     /** Clicks the Title of the tour card */
@@ -69,9 +74,9 @@ class DestinationTourAssertions {
     async allElementsAreVisbile() {
         for (
             const el of [
-                this.card.thumbnailImg,
+                this.card.photoThumbnail,
                 this.card.title,
-                this.card.mapImg,
+                this.card.mapThumbnail,
                 this.card.category,
                 this.card.reviews,
                 this.card.totalPrice,

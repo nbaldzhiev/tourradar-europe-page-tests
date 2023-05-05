@@ -11,6 +11,7 @@ export class EuropeDestinationsPage {
     readonly filtersSidebar: Locator;
     readonly tourCardItem: Locator;
     readonly pager: Locator;
+    readonly mapPopup: Locator;
     // Won't add the rest of the elements on the page as it can be seen what the idea is
 
     constructor(page: Page) {
@@ -21,6 +22,7 @@ export class EuropeDestinationsPage {
         this.filtersSidebar = page.locator('[data-cy="serp-filters"] aside');
         this.tourCardItem = page.locator('[data-cy="serp-tours--list"] ul li[data-cy="serp-tour"]');
         this.pager = page.locator('div.pag');
+        this.mapPopup = page.locator('div#map_popup');
     }
 
     /**
@@ -29,6 +31,22 @@ export class EuropeDestinationsPage {
      */
     getTourCardByIndex(index: number): DestinationTourCard {
         return new DestinationTourCard(this.tourCardItem.nth(index - 1));
+    }
+
+    /** Gets and returns the tour title within the map popup */
+    async getMapPopupTourTitle(): Promise<string> {
+        const text = await this.mapPopup.locator('a.ao-common-map-popup__content-info-details-tour-link').textContent();
+        return text!.trim();
+    }
+
+    /** Clicks the tour title within the map popup */
+    async clickMapPopupTourTitle() {
+        await this.mapPopup.locator('a.ao-common-map-popup__content-info-details-tour-link').click();
+    }
+
+    /** Clicks View Tour button within the map popup */
+    async clickMapPopupViewTourBtn() {
+        await this.mapPopup.locator('a.aa-icon-btn--chevron-right').click();
     }
 
     /**
@@ -66,5 +84,12 @@ class EuropeDestinationsPageAssertions {
     /** Asserts that the page title is correct */
     async pageTitleIsCorrect() {
         await expect(this.page.page).toHaveTitle(/.*Best Europe Tours & Trips.*/)
+    }
+
+    /** Asserts that the map poup has a given tour title
+     * @param title The expected tour title in the popup
+     */
+    async mapPopupTourTitleIsCorrect(title: string) {
+        expect(await this.page.getMapPopupTourTitle()).toEqual(title);
     }
 }
