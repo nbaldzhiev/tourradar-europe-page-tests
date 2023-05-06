@@ -12,13 +12,7 @@ within the root folder of the repository.
 
 ## Running tests
 
-You can run the tests either locally or via GitHub Actions. They run using 1 worker and against Chromium, Firefox and Webkit (Desktop Safari).
-
-### Locally
-
-After installing, run
-
-    $ npx playwright test
+You can run the tests in three ways: locally via Node, locally via Docker or via GitHub Actions. They run using 1 worker and against Chromium, Firefox and Webkit (Desktop Safari).
 
 ### GitHub Actions (CI)
 
@@ -28,7 +22,15 @@ The Playwright HTML report is uploaded as a workflow artifact.
 
 > **_NOTE:_** You need to be a repository collaborator in order to run the workflow.
 
-### Location
+### Locally via Docker
+
+    $ ./run_docker.sh
+
+### Locally via Node
+
+After installing, run
+
+    $ npx playwright test
 
 Tests are located in the `tests/europe-destinations-page.spec` file:
 
