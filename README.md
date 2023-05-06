@@ -24,6 +24,8 @@ The Playwright HTML report is uploaded as a workflow artifact.
 
 ### Locally via Docker
 
+It's not necessary to install the project when running via Docker. Simply do:
+
     $ ./run_docker.sh
 
 ### Locally via Node
