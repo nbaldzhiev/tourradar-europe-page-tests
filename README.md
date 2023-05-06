@@ -37,3 +37,7 @@ Tests are located in the `tests/europe-destinations-page.spec` file:
 -   `Should be able to open a tour by clicking on the <component>` (parameterised test, a total of 3 tests);
 -   `Should be able to open the map popup and then the tour by clicking on the <component> in the popup` (parameterised test, a total of 2 tests);
 -   `Filtering by multiple filters - Adventure Styles and Operated In`.
+
+## Test plan
+
+-  [Test_Plan-TourRadar_Europe_Destinations_page.pdf](https://github.com/nbaldzhiev/tourradar-europe-page-tests/blob/main/Test_Plan-TourRadar_Europe_Destinations_page.pdf)
