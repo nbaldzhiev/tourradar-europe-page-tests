@@ -12,6 +12,7 @@ test.describe('Europe Destinations Page', () => {
 
     ['photo thumbnail', 'title', 'View Tour button'].forEach((target) => {
         test(`Should be able to open a tour by clicking on the ${target}`, async ({ context, appUI }) => {
+            // Use the topmost tour as the test tour
             const tour = appUI.europeDestinationsPage.getTourCardByIndex(1);
             await tour.assertThat.allElementsAreVisbile();
             const tourTitle = await tour.getTourTitle();
@@ -39,6 +40,7 @@ test.describe('Europe Destinations Page', () => {
             context,
             appUI,
         }) => {
+            // Use the topmost tour as the test tour
             const tour = appUI.europeDestinationsPage.getTourCardByIndex(1);
             await tour.assertThat.allElementsAreVisbile();
             const tourTitle = await tour.getTourTitle();
