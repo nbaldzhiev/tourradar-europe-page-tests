@@ -27,8 +27,6 @@ if docker info ; then
   fi
   docker run $IMAGE_NAME
   echo 'Ran the container in attached mode.'
-  docker rm --force $CONTAINER_ID
-  echo 'Forcefully removed the container.'
 else
   echo 'The command "docker info" was unsuccessful! Please either start or install Docker.'
 fi
