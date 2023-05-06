@@ -16,7 +16,6 @@ export class DestinationTourCard {
     readonly operatedInLanguages: Locator;
     // Won't add the rest of the elements on the cards as it can be seen what the idea is
 
-
     constructor(cardLocator: Locator) {
         this.photoThumbnail = cardLocator.locator('img[data-id]');
         this.mapThumbnail = cardLocator.locator('img.map');
@@ -52,7 +51,7 @@ export class DestinationTourCard {
 
     /** Gets and returns the tour title */
     async getTourTitle(): Promise<string | undefined> {
-        let text = await this.title.textContent();
+        const text = await this.title.textContent();
         return text?.trim();
     }
 
@@ -75,19 +74,17 @@ class DestinationTourAssertions {
 
     /** Asserts that all elements within the tour card item are visible */
     async allElementsAreVisbile() {
-        for (
-            const el of [
-                this.card.photoThumbnail,
-                this.card.title,
-                this.card.mapThumbnail,
-                this.card.category,
-                this.card.reviews,
-                this.card.totalPrice,
-                this.card.length,
-                this.card.viewTourBtn,
-                this.card.downloadBruchureBtn
-            ]
-        )
-        await expect(el).toBeVisible();
+        for (const el of [
+            this.card.photoThumbnail,
+            this.card.title,
+            this.card.mapThumbnail,
+            this.card.category,
+            this.card.reviews,
+            this.card.totalPrice,
+            this.card.length,
+            this.card.viewTourBtn,
+            this.card.downloadBruchureBtn,
+        ])
+            await expect(el).toBeVisible();
     }
 }

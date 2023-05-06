@@ -10,7 +10,6 @@ export class AppUI {
     readonly homePage: HomePage;
     readonly europeDestinationsPage: EuropeDestinationsPage;
 
-
     constructor(page: Page) {
         this.page = page;
         this.homePage = new HomePage(page);

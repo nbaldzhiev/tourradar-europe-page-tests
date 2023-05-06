@@ -82,22 +82,15 @@ class EuropeDestinationsPageAssertions {
 
     /** Asserts that all expected elements on the page are visible */
     async allExpectedPageElementsAreVisbile() {
-        for (
-            const el of [
-                this.page.headerNavBar,
-                this.page.title,
-                this.page.pageDescription,
-                this.page.pager,
-            ]
-        )
-        await expect(el).toBeVisible();
+        for (const el of [this.page.headerNavBar, this.page.title, this.page.pageDescription, this.page.pager])
+            await expect(el).toBeVisible();
         await this.page.filtersSidebar.assertThat.allFiltersAreVisible();
         await expect(this.page.tourCardItem).toHaveCount(15);
     }
 
     /** Asserts that the page title is correct */
     async pageTitleIsCorrect() {
-        await expect(this.page.page).toHaveTitle(/.*Best Europe Tours & Trips.*/)
+        await expect(this.page.page).toHaveTitle(/.*Best Europe Tours & Trips.*/);
     }
 
     /** Asserts that the map poup has a given tour title

@@ -17,7 +17,7 @@ export class FiltersSidebar {
     constructor(page: Page) {
         this.page = page;
         this.numOfFiltersAppliedMsg = page.locator(
-            `${PARENT} [data-cy="serp-filters--filter-card-number-of-filters-applied"]`
+            `${PARENT} [data-cy="serp-filters--filter-card-number-of-filters-applied"]`,
         );
         this.clearAllBtn = page.locator(`${PARENT} a.serp-parameters__clear-all`);
         this.appliedFilters = page.locator(`${PARENT} .js-serp-parameters__filters > div[data-clear]`);
@@ -26,9 +26,15 @@ export class FiltersSidebar {
         this.operatedInFilterExpanded = page.locator(`${PARENT} ul[data-cy="serp-filters--guide-language-list"]`);
     }
 
-    async getNumOfFiltersApplied(): Promise<Number> {
+    async getNumOfFiltersApplied(): Promise<number> {
         const msg = await this.numOfFiltersAppliedMsg.textContent();
-        return parseInt(msg?.match(/([0-9]+) filters applied/)![1]!)
+        if (typeof msg === 'string') {
+            const numOfFilters = msg.match(/([0-9]+) filters applied/);
+            if (numOfFilters) {
+                return parseInt(numOfFilters[1]);
+            }
+        }
+        return 0;
     }
 
     /**
@@ -111,7 +117,7 @@ class FiltersSidebarAssertions {
      * @param expNumber The expected number of filters
      */
     async numOfAppliedFiltersInListIsCorrect(expNumber: number) {
-        expect(this.sidebar.appliedFilters).toHaveCount(expNumber);
+        await expect(this.sidebar.appliedFilters).toHaveCount(expNumber);
     }
 
     /**
