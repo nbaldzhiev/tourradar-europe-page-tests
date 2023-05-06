@@ -1,5 +1,6 @@
 /** This module contains a page object model for the Europe Destinations page */
 import { DestinationTourCard } from './widgets/destination-tour-card';
+import { FiltersSidebar } from './widgets/filters-sidebar';
 import { Page, Locator, expect } from '@playwright/test';
 
 /** This class defines an abstraction of the Eruope Destinations page */
@@ -8,7 +9,7 @@ export class EuropeDestinationsPage {
     readonly headerNavBar: Locator;
     readonly title: Locator;
     readonly pageDescription: Locator;
-    readonly filtersSidebar: Locator;
+    readonly filtersSidebar: FiltersSidebar;
     readonly tourCardItem: Locator;
     readonly pager: Locator;
     readonly mapPopup: Locator;
@@ -19,7 +20,7 @@ export class EuropeDestinationsPage {
         this.headerNavBar = page.locator('div[data-cy="common-header"]');
         this.title = page.locator('section h1.aa-text-h4', { hasText: 'Europe Tours & Trips' });
         this.pageDescription = page.locator('section p.ao-serp-hero__description');
-        this.filtersSidebar = page.locator('[data-cy="serp-filters"] aside');
+        this.filtersSidebar = new FiltersSidebar(page);
         this.tourCardItem = page.locator('[data-cy="serp-tours--list"] ul li[data-cy="serp-tour"]');
         this.pager = page.locator('div.pag');
         this.mapPopup = page.locator('div#map_popup');
@@ -50,6 +51,19 @@ export class EuropeDestinationsPage {
     }
 
     /**
+     * Waits until both photo and map thumbnails have loaded
+     * @param timeout TImeout for waiting for the thumbnails to load
+     */
+    async waitUntilAllTourThumbnailsHaveLoaded(timeout = 15) {
+        for (const el of await this.page.locator('img[data-id]:not([class*="lazy"])').all()) {
+            await expect(el).toBeVisible({ timeout: timeout * 1000 });
+        }
+        for (const el of await this.page.locator('img.map:not([class*="lazy"])').all()) {
+            await expect(el).toBeVisible({ timeout: timeout * 1000 });
+        }
+    }
+
+    /**
      * Returns a EuropeDestinationsPageAssertions object as an interface to invoking assertions on the page
      * @returns {EuropeDestinationsPageAssertions}
      */
@@ -73,11 +87,11 @@ class EuropeDestinationsPageAssertions {
                 this.page.headerNavBar,
                 this.page.title,
                 this.page.pageDescription,
-                this.page.filtersSidebar,
                 this.page.pager,
             ]
         )
         await expect(el).toBeVisible();
+        await this.page.filtersSidebar.assertThat.allFiltersAreVisible();
         await expect(this.page.tourCardItem).toHaveCount(15);
     }
 
@@ -91,5 +105,18 @@ class EuropeDestinationsPageAssertions {
      */
     async mapPopupTourTitleIsCorrect(title: string) {
         expect(await this.page.getMapPopupTourTitle()).toEqual(title);
+    }
+
+    /**
+     * Asserts that all tours have expected adventures styles
+     * @param adventureStyles A list of expected adventure styles which would be tested against each tour
+     */
+    async allToursHaveExpectedAdventureStyles(adventureStyles: string[]) {
+        const tours = await this.page.tourCardItem.all();
+        const re = new RegExp(adventureStyles.join('|'));
+        for (const tour of tours) {
+            const tourInstance = this.page.getTourCardByIndex(tours.indexOf(tour) + 1);
+            await expect(tourInstance.category).toContainText(re);
+        }
     }
 }

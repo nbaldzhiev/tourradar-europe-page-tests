@@ -1,13 +1,12 @@
 import { test, expect } from './fixture-test';
 
 test.describe('Europe Destinations Page', () => {
+    test.setTimeout(120000);
 
     test.beforeEach(async ({ appUI }) => {
-        appUI.homePage.openAllEuropeAdventuresLink();
-        appUI.europeDestinationsPage.assertThat.pageTitleIsCorrect();
-    })
-
-    test('Should be able to see all elements on the page', async ({ appUI }) => {
+        await appUI.homePage.openAllEuropeAdventuresLink();
+        await appUI.europeDestinationsPage.assertThat.pageTitleIsCorrect();
+        await appUI.europeDestinationsPage.waitUntilAllTourThumbnailsHaveLoaded();
         await appUI.europeDestinationsPage.assertThat.allExpectedPageElementsAreVisbile();
     });
 
@@ -61,5 +60,28 @@ test.describe('Europe Destinations Page', () => {
             }
         )
     });
+
+    test('Filtering by multiple filters - Adventure Styles and Operated In', async ({ appUI }) => {
+        const adventureStyles = ['In-depth Cultural', 'Explorer'];
+        const appliedAdventureStyles: string[] = []
+        adventureStyles.forEach(style => appliedAdventureStyles.push(`Style is ${style}`));
+        const operatedInLangs = ['French'];
+        const appliedLangs: string[] = []
+        operatedInLangs.forEach(lang => appliedLangs.push(`Operated in ${lang}`));
+
+        await appUI.europeDestinationsPage.filtersSidebar.selectAdventureStyleFilters(adventureStyles);
+        await appUI.europeDestinationsPage.filtersSidebar.selectOperatedInFilters(operatedInLangs);
+
+        await appUI.europeDestinationsPage.filtersSidebar.assertThat.numOfFiltersAppliedIsCorrect(2);
+        await appUI.europeDestinationsPage.filtersSidebar.assertThat.numOfAppliedFiltersInListIsCorrect(
+            adventureStyles.length + operatedInLangs.length
+        );
+        for (const text of appliedAdventureStyles.concat(appliedLangs)) {
+            await appUI.europeDestinationsPage.filtersSidebar.assertThat.filterTextExistsInAppliedFilters(text);
+        }
+
+        await appUI.europeDestinationsPage.assertThat.allToursHaveExpectedAdventureStyles(adventureStyles);
+        await appUI.europeDestinationsPage.filtersSidebar.clearAllFilters();
+    })
 
 });

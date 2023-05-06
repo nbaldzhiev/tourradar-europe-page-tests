@@ -12,7 +12,6 @@ export class HomePage {
     constructor(page: Page) {
         this.page = page;
         this.allEuropeAdventuresLink = page.locator('.ao-clp-seo-destination-links a[href="/d/europe"]');
-
     }
 
     /** Clicks the All Adventures link button for the Europe Popular Destination */
@@ -20,4 +19,5 @@ export class HomePage {
         await this.allEuropeAdventuresLink.click();
         await expect(this.allEuropeAdventuresLink).toBeHidden();
     }
+
 }

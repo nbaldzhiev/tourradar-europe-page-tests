@@ -13,6 +13,7 @@ export class DestinationTourCard {
     readonly length: Locator;
     readonly viewTourBtn: Locator;
     readonly downloadBruchureBtn: Locator;
+    readonly operatedInLanguages: Locator;
     // Won't add the rest of the elements on the cards as it can be seen what the idea is
 
 
@@ -26,6 +27,7 @@ export class DestinationTourCard {
         this.length = cardLocator.locator('.br__price-wrapper-info > :nth-child(2)');
         this.viewTourBtn = cardLocator.locator('a[class*="aa-btn"][class*="tourLink"]');
         this.downloadBruchureBtn = cardLocator.locator('[data-cy="serp-tour--download-brochure"]');
+        this.operatedInLanguages = cardLocator.locator('dl.values > dd:nth-of-type(5)');
     }
 
     /** Clicks the Photo Thumbnail of the tour card */
@@ -48,7 +50,8 @@ export class DestinationTourCard {
         await this.viewTourBtn.click();
     }
 
-    async getTourTitle() {
+    /** Gets and returns the tour title */
+    async getTourTitle(): Promise<string | undefined> {
         let text = await this.title.textContent();
         return text?.trim();
     }
